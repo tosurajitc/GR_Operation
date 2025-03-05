@@ -1,0 +1,40 @@
+create virtual environment: python -m venv .venv
+Activate virtual environment: .venv\Scripts\activate
+How to activate .env file: pip install python-dotenv then from dotenv import load_dotenv then add this function load_dotenv()  # Load variables from .env into the environment
+Run the requirement.txt file: pip install -r requirements.txt
+create requirement.txt file: pip freeze > requirements.txt
+to run the program : streamlit run main.py
+
+GIT PUSH Steps: 
+In the terminal, initialize a new Git repository: git init
+Add all files in your folder to the staging area: git add .
+Commit the files with a message: git commit -m "Initial commit"
+Link your local repository to the GitHub repository you mentioned: git remote add origin https://github.com/tosurajitc/Agentic_Reporting.git
+Push the changes to the remote repository: git push -u origin master
+
+Project Structure: To run the program from bash: python main.py --ui
+
+dgft_regulatory_monitor/
+│
+├── .env                      # Environment variables (API keys, URLs)
+├── main.py                   # Main entry point
+├── requirements.txt          # Project dependencies
+│
+├── agents/
+│   ├── __init__.py
+│   ├── web_scraper_agent.py  # Web scraping and navigation
+│   ├── pdf_extractor_agent.py # PDF extraction and downloading
+│   ├── ocr_agent.py          # OCR processing for image-based PDFs
+│   ├── analysis_agent.py     # LLM-based analysis and insights
+│   └── coordinator_agent.py  # Orchestrates the workflow between agents
+│
+├── utils/
+│   ├── __init__.py
+│   ├── date_utils.py         # Date comparison and processing
+│   ├── pdf_utils.py          # PDF processing utilities
+│   └── logging_utils.py      # Logging functionality
+|   |__email_notifier.py
+│
+└── ui/      # Logging functionality
+    ├── __init__.py
+    └── app.py                # Streamlit frontend
