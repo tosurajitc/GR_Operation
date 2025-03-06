@@ -126,7 +126,7 @@ class PDFExtractorAgent(Agent):
                 result[doc_type] = {
                     "path": pdf_path,
                     "date": latest_doc["date"],
-                    "title": latest_doc.get("title", "N/A"),
+                    "title": latest_doc.get("description", "N/A"),
                     "url": latest_doc["attachment_url"]
                 }
         

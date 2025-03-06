@@ -193,7 +193,7 @@ class EmailNotifier:
                 metadata = result.get("metadata", {})
                 
                 date_str = format_date(metadata.get("date")) if metadata.get("date") else "N/A"
-                title = metadata.get("title", "N/A")
+                title = metadata.get("description", "N/A")
                 
                 html += f"""
                     <div class="document">

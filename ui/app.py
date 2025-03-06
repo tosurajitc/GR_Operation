@@ -155,7 +155,7 @@ def display_document_info(doc_info, doc_type):
         <table class="metadata-table">
             <tr>
                 <th>Title</th>
-                <td>{doc_info.get('title', 'N/A')}</td>
+                <td>{doc_info.get('description', 'N/A')}</td>
             </tr>
             <tr>
                 <th>Date</th>
@@ -188,7 +188,7 @@ def display_analysis_results(analysis_results):
                 st.subheader("Document Details")
                 st.markdown(f"**Type:** {doc_type}")
                 st.markdown(f"**Date:** {format_date(metadata.get('date'))}")
-                st.markdown(f"**Title:** {metadata.get('title', 'N/A')}")
+                st.markdown(f"**Title:** {metadata.get('description', 'N/A')}")
                 if metadata.get('url'):
                     st.markdown(f"**Source:** [View Original Document]({metadata.get('url')})")
             
@@ -240,7 +240,7 @@ def display_analysis_results(analysis_results):
                 json_str = json.dumps({
                     "document_type": doc_type,
                     "date": format_date(metadata.get("date")),
-                    "title": metadata.get("title", "N/A"),
+                    "title": metadata.get("description", "N/A"),
                     "analysis": analysis,
                     "structured_data": structured_data
                 }, indent=2)
@@ -385,14 +385,11 @@ def main():
     st.markdown("""
     <div class="header-container">
         <div class="title-with-icon">
-            <h1>📋 DGFT Regulatory Updates Monitor</h1>
+            <h1>DGFT Regulatory Updates Monitor</h1>
         </div>
-        <div class="last-updated">
-            Last updated: {datetime.now().strftime('%d %b %Y, %H:%M')}
-        </div>
-    </div>
+    </div>        
     """, unsafe_allow_html=True)
-    
+    st.markdown(f"Last updated: {datetime.now().strftime('%d %b %Y, %H:%M')}")
     st.markdown("""
     This application monitors the latest regulatory updates from the Directorate General of Foreign Trade (DGFT) 
     including Notifications, Public Notices, and Circulars. It analyzes these documents using OCR and LLM 
@@ -497,15 +494,15 @@ def main():
                 st.metric("Latest Update", format_date(latest_date) if latest_date else "N/A")
             
             # Display key changes
-            st.subheader("Key Changes")
-            display_key_changes(results.get("key_changes", {}))
+            #st.subheader("Key Changes")
+            #display_key_changes(results.get("key_changes", {}))  ------------------- can enable is extra details required
             
             # Display simplified document list
-            st.subheader("Latest Documents")
-            for result in results.get("analyses", []):
-                doc_type = result.get("type", "Unknown")
-                metadata = result.get("metadata", {})
-                display_document_info(metadata, doc_type)
+            #st.subheader("Latest Documents")
+            # for result in results.get("analyses", []):
+            #     doc_type = result.get("type", "Unknown")
+            #     metadata = result.get("metadata", {})
+            #     display_document_info(metadata, doc_type)
         
         # Document Analysis tab
         with tabs[1]:

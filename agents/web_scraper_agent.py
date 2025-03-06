@@ -91,7 +91,7 @@ class WebScraperAgent(Agent):
         
         Returns:
             Dictionary with document types as keys and lists of document info as values.
-            Each document info includes date, title, and attachment URL.
+            Each document info includes date, Description, and attachment URL.
         """
         try:
             driver = self.setup_webdriver()
@@ -240,7 +240,7 @@ class WebScraperAgent(Agent):
             # Find indices for date and attachment columns
             date_idx = next((i for i, h in enumerate(header_texts) if "date" in h), None)
             attachment_idx = next((i for i, h in enumerate(header_texts) if "attachment" in h), None)
-            title_idx = next((i for i, h in enumerate(header_texts) if "title" in h or "subject" in h), None)
+            title_idx = next((i for i, h in enumerate(header_texts) if "description" in h ), None)
             
             if date_idx is None or attachment_idx is None:
                 logger.error("Could not find Date or Attachment columns in the table")
@@ -260,7 +260,7 @@ class WebScraperAgent(Agent):
                 date_obj = parse_date(date_text)
                 
                 # Extract title if available
-                title = cells[title_idx].text.strip() if title_idx is not None and title_idx < len(cells) else "N/A"
+                description = cells[title_idx].text.strip() if title_idx is not None and title_idx < len(cells) else "N/A"
                 
                 # Extract attachment link
                 attachment_cell = cells[attachment_idx]
@@ -276,7 +276,7 @@ class WebScraperAgent(Agent):
                     documents.append({
                         "date": date_obj,
                         "date_text": date_text,
-                        "title": title,
+                        "title": description,
                         "attachment_url": attachment_url
                     })
             
@@ -309,10 +309,10 @@ class WebScraperAgent(Agent):
             headers = table.find_elements(By.XPATH, ".//th")
             header_texts = [h.text.strip().lower() for h in headers]
             
-            # Find indices for date and attachment columns
+            # Find indices for date description and attachment columns
             date_idx = next((i for i, h in enumerate(header_texts) if "date" in h), None)
             attachment_idx = next((i for i, h in enumerate(header_texts) if "attachment" in h), None)
-            title_idx = next((i for i, h in enumerate(header_texts) if "title" in h or "subject" in h), None)
+            title_idx = next((i for i, h in enumerate(header_texts) if "description" in h or "subject" in h), None)
             
             if date_idx is None or attachment_idx is None:
                 logger.error("Could not find Date or Attachment columns in the table")
@@ -332,7 +332,7 @@ class WebScraperAgent(Agent):
                 date_obj = parse_date(date_text)
                 
                 # Extract title if available
-                title = cells[title_idx].text.strip() if title_idx is not None and title_idx < len(cells) else "N/A"
+                description = cells[title_idx].text.strip() if title_idx is not None and title_idx < len(cells) else "N/A"
                 
                 # Extract attachment link
                 try:
@@ -342,7 +342,7 @@ class WebScraperAgent(Agent):
                     documents.append({
                         "date": date_obj,
                         "date_text": date_text,
-                        "title": title,
+                        "title": description,
                         "attachment_url": attachment_url
                     })
                 except NoSuchElementException:

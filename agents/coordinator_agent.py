@@ -124,7 +124,7 @@ class CoordinatorAgent:
                 description="""
                 Access the DGFT regulatory updates website and identify the latest 
                 Notifications, Public Notices, and Circulars. Extract the tables of
-                content with dates and attachment links for each document type.
+                content with Description, dates and attachment links for each document type.
                 """,
                 agent=self.web_scraper,
                 expected_output="Dictionary of document types with their content tables"

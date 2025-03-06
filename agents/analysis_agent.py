@@ -236,7 +236,7 @@ class AnalysisAgent(Agent):
             text = doc_info.get("text", "")
             metadata = {
                 "date": doc_info.get("date"),
-                "title": doc_info.get("title", "N/A"),
+                "title": doc_info.get("description", "N/A"),
                 "url": doc_info.get("url", ""),
                 "file_path": str(doc_info.get("path", ""))
             }
@@ -263,7 +263,7 @@ class AnalysisAgent(Agent):
         docs_summary = []
         for result in analysis_results:
             doc_type = result.get("type", "Unknown")
-            title = result.get("metadata", {}).get("title", "Untitled")
+            title = result.get("metadata", {}).get("description", "Untitled")
             date = result.get("metadata", {}).get("date")
             date_str = date.strftime("%d %B, %Y") if date else "unknown date"
             
