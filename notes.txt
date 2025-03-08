@@ -1,5 +1,5 @@
 create virtual environment: python -m venv .venv
-Activate virtual environment: .venv\Scripts\activate
+Activate virtual environment: .venv\scripts\activate
 How to activate .env file: pip install python-dotenv then from dotenv import load_dotenv then add this function load_dotenv()  # Load variables from .env into the environment
 Run the requirement.txt file: pip install -r requirements.txt
 create requirement.txt file: pip freeze > requirements.txt
@@ -14,27 +14,138 @@ Push the changes to the remote repository: git push -u origin master
 
 Project Structure: To run the program from bash: python main.py --ui
 
-dgft_regulatory_monitor/
-│
-├── .env                      # Environment variables (API keys, URLs)
-├── main.py                   # Main entry point
-├── requirements.txt          # Project dependencies
-│
+project_root/
+├── .env                   # Environment variables
+├── main.py                # Main application entry point
+├── requirements.txt       # Dependencies
 ├── agents/
 │   ├── __init__.py
-│   ├── web_scraper_agent.py  # Web scraping and navigation
-│   ├── pdf_extractor_agent.py # PDF extraction and downloading
-│   ├── ocr_agent.py          # OCR processing for image-based PDFs
-│   ├── analysis_agent.py     # LLM-based analysis and insights
-│   └── coordinator_agent.py  # Orchestrates the workflow between agents
-│
+│   ├── web_agent.py       # Web scraping agent
+│   ├── pdf_agent.py       # PDF processing and OCR agent
+│   ├── email_agent.py     # Email notification agent
+│   └── query_agent.py     # Query processing agent
 ├── utils/
 │   ├── __init__.py
-│   ├── date_utils.py         # Date comparison and processing
-│   ├── pdf_utils.py          # PDF processing utilities
-│   └── logging_utils.py      # Logging functionality
-|   |__email_notifier.py
-│
-└── ui/      # Logging functionality
-    ├── __init__.py
-    └── app.py                # Streamlit frontend
+│   ├── data_handler.py    # Data processing utilities
+│   └── config.py          # Configuration loader
+└── frontend/
+    └── streamlit_app.py   # Streamlit frontend
+
+======================================================================================================
+Web Agent
+The web agent is responsible for:
+
+Connecting to the DGFT portal
+Navigating through different sections (Notifications, Public Notices, Circulars)
+Extracting document metadata including dates, descriptions, and attachment links
+Downloading PDF attachments
+
+The agent uses Selenium for web automation and handles various error conditions.
+PDF Agent
+The PDF agent processes and analyzes PDF documents:
+
+Extracts text using PyPDF2 for text-based PDFs
+Falls back to OCR using Tesseract for image-based PDFs
+Analyzes content using GROQ LLM to generate summaries
+Handles file conversions and text processing
+
+Email Agent
+The email agent sends notifications:
+
+Composes formatted HTML emails with document details
+Attaches PDF files
+Sends emails via SMTP
+Handles authentication and error conditions
+
+Query Agent
+The query agent interprets natural language queries:
+
+Processes user queries using GROQ LLM or rule-based fallbacks
+Extracts search parameters (document type, date range, keywords)
+Filters documents based on query parameters
+Returns matching documents ranked by relevance
+
+Data Handler
+The data handler manages document data:
+
+Stores and retrieves document metadata
+Manages processed documents with OCR text and analysis
+Persists data to disk for durability
+Provides document search and filtering
+
+Configuration System
+The configuration system:
+
+Loads environment variables from .env file
+Validates configuration values
+Provides configuration status and error reporting
+Makes configuration available to all components
+
+Additional Features
+Command-Line Interface
+The system includes a comprehensive CLI for automation and integration with other systems:
+
+Fetch updates via scheduled jobs
+Process documents in batch mode
+Send automated notifications
+Run queries programmatically
+
+Error Handling and Logging
+The system includes robust error handling and logging:
+
+Detailed logging of all operations
+Fallbacks for API failures
+Graceful degradation when components are unavailable
+
+Data Persistence
+The system persists data to ensure durability:
+
+Saves document metadata to JSON files
+Stores processed documents with OCR text and analysis
+Maintains state between runs
+
+Future Enhancements
+Potential enhancements for the system include:
+
+Multi-user support - Add authentication and user-specific preferences
+Additional document sources - Extend to monitor other regulatory websites
+Advanced analytics - Track changes in regulations over time
+Document comparison - Highlight differences between versions
+Automated tagging - Use AI to categorize documents by topic
+Mobile notifications - Add push notifications via mobile app
+Improved OCR - Enhance OCR with custom models for regulatory documents
+API integration - Provide REST API for integrating with other systems
+
+Troubleshooting
+Common Issues
+
+Web scraping failures
+
+Check if the DGFT website structure has changed
+Update the web agent selectors if needed
+Try increasing wait times for slow connections
+
+
+OCR issues
+
+Verify Tesseract is properly installed
+Check OCR language settings
+Increase DPI for better text recognition
+
+
+Email sending failures
+
+Verify SMTP settings
+Check if app password is correct
+Ensure less secure app access is enabled for the sender account
+
+
+GROQ API errors
+
+Verify API key is valid
+Check for usage limits
+Ensure model name is correct
+
+
+
+For any other issues, check the application logs in app.log for detailed error messages.
